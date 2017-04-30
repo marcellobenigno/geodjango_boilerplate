@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extras_assets %}
+    <link href="{% static 'libs/leaflet/leaflet.css' %}" rel="stylesheet">
+{% endblock extras_assets %}
+
+
+{% block title %} Leaflet Map {% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div id="map"></div>
+        </div><!-- .col-md-12 -->
+    </div><!-- .row -->
+{% endblock content %}
+
+{% block extras_js %}
+
+    <script src="{% static 'libs/leaflet/leaflet.js' %}"></script>
+
+    <script>
+
+        var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+            mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+
+        var grayscale = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
+            streets = L.tileLayer(mbUrl, {id: 'mapbox.streets', attribution: mbAttr});
+
+        var map = L.map('map', {
+            center: [-7.177200, -36.795959],
+            zoom: 8,
+            layers: [streets]
+        });
+
+        var baseLayers = {
+            "Grayscale": grayscale,
+            "Streets": streets
+        };
+
+        var overlays = {};
+
+        L.control.layers(baseLayers, overlays).addTo(map);
+
+    </script>
+
+{% endblock extras_js %}
